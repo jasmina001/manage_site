@@ -18,7 +18,6 @@ const Landing = () => {
         </h1> 
         <img src={heroImg} alt="hero" className="w-72 md:w-96 lg:w-[28rem]" />
       </div>
-
       <a
   href="https://t.me/JasLangBot"   
   target="_blank"
