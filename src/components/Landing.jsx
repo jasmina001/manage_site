@@ -15,18 +15,19 @@ const Landing = () => {
       <div className="flex flex-col items-center text-center">
         <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold leading-snug mb-6">
           Find out <br /> your English level!
-        </h1>
+        </h1> 
         <img src={heroImg} alt="hero" className="w-72 md:w-96 lg:w-[28rem]" />
       </div>
 
       <a
-        href="https://t.me/+avqi5vBa4TU1NWVi"   
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-full bg-orange-500 text-white py-3 rounded-full text-lg md:text-xl font-medium shadow-md hover:bg-orange-600 transition text-center"
-      >
-        Start
-      </a>
+  href="https://t.me/JasLangBot"   
+  target="_blank"
+  rel="noopener noreferrer"
+  className="w-full bg-orange-500 text-white py-3 rounded-full text-lg md:text-xl font-medium shadow-md hover:bg-orange-600 transition text-center"
+>
+ Start
+</a>
+
     </div>
   );
 };

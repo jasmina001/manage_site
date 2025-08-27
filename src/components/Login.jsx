@@ -1,5 +1,4 @@
-// src/components/Login.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 
 const Login = () => {
@@ -30,7 +29,6 @@ const Login = () => {
       console.log("Server response:", data);
 
       if (response.ok) {
-      
         window.location.href = "/dashboard"; 
       } else {
         alert("Login failed: " + (data.message || "Unknown error"));
@@ -41,9 +39,22 @@ const Login = () => {
     }
   };
 
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://telegram.org/js/telegram-widget.js?22";
+    script.async = true;
+    script.setAttribute("data-telegram-login", "JasLangBot"); 
+    script.setAttribute("data-size", "large");
+    script.setAttribute("data-auth-url", "https://sizning-saytingiz.com/auth/telegram"); 
+    script.setAttribute("data-request-access", "write");
+    document.getElementById("telegram-login-btn").appendChild(script);
+  }, []);
+
   return (
     <div className="login-container">
       <h2 className="login-title">Please answer my questions:</h2>
+
       <form onSubmit={handleSubmit} className="login-form">
         <input
           type="text"
@@ -75,6 +86,9 @@ const Login = () => {
         />
         <button type="submit">Continue</button>
       </form>
+
+   
+      <div id="telegram-login-btn" style={{ marginTop: "20px" }}></div>
     </div>
   );
 };
