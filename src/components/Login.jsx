@@ -9,19 +9,22 @@ const Login = () => {
     city: "",
   });
 
+  const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     try {
-      const response = await fetch("https://example.com/api/login", { 
+      // API chaqirish
+      const response = await fetch("https://example.com/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -29,66 +32,82 @@ const Login = () => {
       console.log("Server response:", data);
 
       if (response.ok) {
-        window.location.href = "/dashboard"; 
+        // foydalanuvchini localStorage ga saqlash
+        localStorage.setItem("user", JSON.stringify(data.user || formData));
+
+        // state ga set qilish
+        setUser(data.user || formData);
+
+        // dashboard sahifasiga yo‘naltirish
+        window.location.href = "/dashboard";
       } else {
-        alert("Login failed: " + (data.message || "Unknown error"));
+        setError(data.message || "Login failed");
       }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Something went wrong!");
+    } catch (err) {
+      console.error("Error:", err);
+      setError("Something went wrong!");
     }
   };
 
-
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-widget.js?22";
-    script.async = true;
-    script.setAttribute("data-telegram-login", "JasLangBot"); 
-    script.setAttribute("data-size", "large");
-    script.setAttribute("data-auth-url", "https://sizning-saytingiz.com/auth/telegram"); 
-    script.setAttribute("data-request-access", "write");
-    document.getElementById("telegram-login-btn").appendChild(script);
+    // agar oldin kirgan bo‘lsa localStorage dan olish
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
   }, []);
 
   return (
     <div className="login-container">
-      <h2 className="login-title">Please answer my questions:</h2>
+      {user ? (
+        <div className="profile">
+          <div className="profile-icon">
+            {user.fullname ? user.fullname.charAt(0).toUpperCase() : "U"}
+          </div>
+          <p>Welcome, {user.fullname}!</p>
+        </div>
+      ) : (
+        <>
+          <h2 className="login-title">Please answer my questions:</h2>
+          <form onSubmit={handleSubmit} className="login-form">
+            <input
+              type="text"
+              name="fullname"
+              placeholder="Fullname"
+              value={formData.fullname}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone number"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="region"
+              placeholder="Region"
+              value={formData.region}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              value={formData.city}
+              onChange={handleChange}
+              required
+            />
+            <button type="submit">Continue</button>
+          </form>
 
-      <form onSubmit={handleSubmit} className="login-form">
-        <input
-          type="text"
-          name="fullname"
-          placeholder="Fullname"
-          value={formData.fullname}
-          onChange={handleChange}
-        />
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Phone number"
-          value={formData.phone}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="region"
-          placeholder="Region"
-          value={formData.region}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={formData.city}
-          onChange={handleChange}
-        />
-        <button type="submit">Continue</button>
-      </form>
-
-   
-      <div id="telegram-login-btn" style={{ marginTop: "20px" }}></div>
+          {error && <p className="error">{error}</p>}
+        </>
+      )}
     </div>
   );
 };
