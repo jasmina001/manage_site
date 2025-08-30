@@ -27,7 +27,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Level + Score */}
+      
         <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
           <div
             onClick={() => navigate("/level")}
@@ -44,8 +44,6 @@ const Dashboard = () => {
             <p className="text-gray-500 text-sm">Avg score</p>
           </div>
         </div>
-
-        {/* Take exam + Donation */}
         <div className="grid md:grid-cols-2 gap-4">
           <button
             onClick={() => navigate("/explanation")}
