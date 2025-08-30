@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useStars } from "../StarContext";
 
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { stars } = useStars();
@@ -9,13 +10,13 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#E6F0FA] flex justify-center py-6 px-4">
       <div className="w-full max-w-sm md:max-w-3xl lg:max-w-5xl space-y-4">
-        {/* Stars (score) */}
+       
         <div className="bg-white rounded-2xl shadow p-4 flex justify-between items-center">
           <span className="text-xl md:text-2xl font-bold">{stars}</span>
           <span className="text-yellow-500 text-2xl md:text-3xl">★</span>
         </div>
 
-        {/* Exams history */}
+       
         <div
           onClick={() => navigate("/exams-history")}
           className="bg-orange-500 text-white rounded-2xl shadow p-4 md:col-span-2 cursor-pointer hover:opacity-90"
