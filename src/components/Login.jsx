@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import "./Login.css";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullname: "",
     phone: "",
@@ -9,105 +10,122 @@ const Login = () => {
     city: "",
   });
 
-  const [error, setError] = useState("");
-  const [user, setUser] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    // Xato yozilgan bo‘lsa, real-time yangilaymiz
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
+    let newErrors = {};
 
-    try {
-      // API chaqirish
-      const response = await fetch("https://example.com/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-      console.log("Server response:", data);
-
-      if (response.ok) {
-        // foydalanuvchini localStorage ga saqlash
-        localStorage.setItem("user", JSON.stringify(data.user || formData));
-
-        // state ga set qilish
-        setUser(data.user || formData);
-
-        // dashboard sahifasiga yo‘naltirish
-        window.location.href = "/dashboard";
-      } else {
-        setError(data.message || "Login failed");
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      setError("Something went wrong!");
+    if (!formData.fullname) newErrors.fullname = "Ism kiritilishi shart!";
+    if (!formData.phone) {
+      newErrors.phone = "Telefon raqam shart!";
+    } else if (!/^\d+$/.test(formData.phone)) {
+      newErrors.phone = "Faqat raqam bo‘lishi kerak!";
     }
+    if (!formData.region) newErrors.region = "Viloyat tanlang!";
+    if (!formData.city) newErrors.city = "Shahar tanlang!";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    navigate("/dashboard");
   };
-
-  useEffect(() => {
-    // agar oldin kirgan bo‘lsa localStorage dan olish
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
 
   return (
-    <div className="login-container">
-      {user ? (
-        <div className="profile">
-          <div className="profile-icon">
-            {user.fullname ? user.fullname.charAt(0).toUpperCase() : "U"}
-          </div>
-          <p>Welcome, {user.fullname}!</p>
-        </div>
-      ) : (
-        <>
-          <h2 className="login-title">Please answer my questions:</h2>
-          <form onSubmit={handleSubmit} className="login-form">
-            <input
-              type="text"
-              name="fullname"
-              placeholder="Fullname"
-              value={formData.fullname}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone number"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="region"
-              placeholder="Region"
-              value={formData.region}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="city"
-              placeholder="City"
-              value={formData.city}
-              onChange={handleChange}
-              required
-            />
-            <button type="submit">Continue</button>
-          </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5"
+      >
+        <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
 
-          {error && <p className="error">{error}</p>}
-        </>
-      )}
+        {/* Ism */}
+        <div>
+          <input
+            type="text"
+            name="fullname"
+            placeholder="Ismingiz"
+            value={formData.fullname}
+            onChange={handleChange}
+            className={`w-full px-4 py-2 rounded-lg border ${
+              errors.fullname ? "border-red-500" : "border-gray-300"
+            } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+          />
+          {errors.fullname && (
+            <p className="text-red-500 text-sm mt-1">{errors.fullname}</p>
+          )}
+        </div>
+
+        {/* Telefon */}
+        <div>
+          <input
+            type="text"
+            name="phone"
+            placeholder="Telefon raqamingiz"
+            value={formData.phone}
+            onChange={handleChange}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className={`w-full px-4 py-2 rounded-lg border ${
+              errors.phone ? "border-red-500" : "border-gray-300"
+            } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+          />
+          {errors.phone && (
+            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+          )}
+        </div>
+
+        {/* Viloyat */}
+        <div>
+          <input
+            type="text"
+            name="region"
+            placeholder="Viloyatingiz"
+            value={formData.region}
+            onChange={handleChange}
+            className={`w-full px-4 py-2 rounded-lg border ${
+              errors.region ? "border-red-500" : "border-gray-300"
+            } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+          />
+          {errors.region && (
+            <p className="text-red-500 text-sm mt-1">{errors.region}</p>
+          )}
+        </div>
+
+        {/* Shahar */}
+        <div>
+          <input
+            type="text"
+            name="city"
+            placeholder="Shaharingiz"
+            value={formData.city}
+            onChange={handleChange}
+            className={`w-full px-4 py-2 rounded-lg border ${
+              errors.city ? "border-red-500" : "border-gray-300"
+            } focus:outline-none focus:ring-2 focus:ring-orange-500`}
+          />
+          {errors.city && (
+            <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+          )}
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"
+        >
+          Continue
+        </button>
+      </form>
     </div>
   );
 };

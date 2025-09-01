@@ -1,9 +1,9 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
-export const StarContext = createContext();
+const StarContext = createContext();
 
 export const StarProvider = ({ children }) => {
-  const [stars, setStars] = useState(0); // nechta yulduz yig'ilgan
+  const [stars, setStars] = useState(0);
 
   return (
     <StarContext.Provider value={{ stars, setStars }}>
@@ -12,7 +12,4 @@ export const StarProvider = ({ children }) => {
   );
 };
 
-// ✅ Custom hook qo'shamiz
-export const useStars = () => {
-  return useContext(StarContext);
-};
+export const useStars = () => useContext(StarContext);
