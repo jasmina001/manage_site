@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
-
 const TelegramLogin = () => {
-
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://telegram.org/js/telegram-widget.js?22";
     script.async = true;
-    script.setAttribute("data-telegram-login", "JasLangBot"); // @ belgisiz username
+    script.setAttribute("data-telegram-login", "JasLangBot");
     script.setAttribute("data-size", "large");
     script.setAttribute("data-userpic", "true");
     script.setAttribute("data-onauth", "onTelegramAuth(user)");
