@@ -1,11 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useStars } from "../StarContext";
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const { stars } = useStars();
-
   return (
     <div className="min-h-screen bg-[#E6F0FA] flex justify-center py-6 px-4">
       <div className="w-full max-w-sm md:max-w-3xl lg:max-w-5xl space-y-4">
@@ -13,7 +11,6 @@ const Dashboard = () => {
           <span className="text-xl md:text-2xl font-bold">{stars}</span>
           <span className="text-yellow-500 text-2xl md:text-3xl">★</span>
         </div>
-
         <div
           onClick={() => navigate("/exams-history")}
           className="bg-orange-500 text-white rounded-2xl shadow p-4 md:col-span-2 cursor-pointer hover:opacity-90"
@@ -23,7 +20,6 @@ const Dashboard = () => {
             View and analyze exam history!
           </p>
         </div>
-
         <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
           <div
             onClick={() => navigate("/level")}
@@ -40,7 +36,6 @@ const Dashboard = () => {
             <p className="text-gray-500 text-sm">Avg score</p>
           </div>
         </div>
-
         <div className="grid md:grid-cols-2 gap-4">
           <button
             onClick={() => navigate("/explanation")}
@@ -61,5 +56,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;
