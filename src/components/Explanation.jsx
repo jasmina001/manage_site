@@ -1,43 +1,31 @@
-import React, { useState } from "react";
-import { useStars } from "../StarContext";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./Explanation.css";
 
-const TakeExam = () => {
-  const { stars, setStars } = useStars();
-  const [questions] = useState([
-    { q: "2+2=?", options: ["3", "4", "5"], correct: "4" },
-    { q: "5-2=?", options: ["2", "3", "4"], correct: "3" },
-  ]);
-  const [current, setCurrent] = useState(0);
+const Explanation = () => {
+  const navigate = useNavigate();
 
-  const handleAnswer = (answer) => {
-    if (answer === questions[current].correct) {
-      setStars(stars + 1); // ⭐ har to‘g‘ri javob uchun oshiradi
-    }
-    setCurrent(current + 1);
+  const handleStart = () => {
+    navigate("/exam");
   };
 
   return (
-    <div className="p-6">
-      {current < questions.length ? (
-        <div>
-          <h2 className="text-lg font-semibold">{questions[current].q}</h2>
-          <div className="space-y-2 mt-3">
-            {questions[current].options.map((o, i) => (
-              <button
-                key={i}
-                onClick={() => handleAnswer(o)}
-                className="block w-full bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-600"
-              >
-                {o}
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <p className="text-lg font-bold">Test tugadi!</p>
-      )}
+    <div className="explanation-container">
+      <div className="explanation-card">
+        <h1 className="title">⚠️ Exam Instructions</h1>
+        <p className="text">
+          You will have several questions. Each question has a time limit. You can answer via microphone and your results will be saved. You cannot go back, only move forward. Please focus carefully!
+        </p>
+        <p className="text">
+          When ready, click the button below to start the exam.
+        </p>
+
+        <button className="start-btn" onClick={handleStart}>
+          🚀 Start Exam
+        </button>
+      </div>
     </div>
   );
 };
 
-export default TakeExam;
+export default Explanation;
