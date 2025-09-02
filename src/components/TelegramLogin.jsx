@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 const TelegramLogin = () => {
 
   useEffect(() => {
-    // Telegram widgetni dinamik qo'shamiz
     const script = document.createElement("script");
     script.src = "https://telegram.org/js/telegram-widget.js?22";
     script.async = true;
@@ -13,8 +12,6 @@ const TelegramLogin = () => {
     script.setAttribute("data-onauth", "onTelegramAuth(user)");
     script.setAttribute("data-request-access", "write");
     document.getElementById("tg-login").appendChild(script);
-
-    // global function qo'shamiz
     window.onTelegramAuth = (user) => {
       document.getElementById("tg-login").style.display = "none";
 
@@ -32,9 +29,7 @@ const TelegramLogin = () => {
       <div className="card bg-gray-900 text-white rounded-xl p-8 shadow-xl text-center max-w-md w-full">
         <h1 className="text-2xl mb-2">Telegram bilan kirish</h1>
         <p className="text-gray-400 mb-6">Quyidagi tugma orqali autentifikatsiya qiling.</p>
-
         <div id="tg-login"></div>
-
         <div className="profile hidden mt-6" id="profile">
           <img id="p-photo" src="" alt="User photo" className="w-24 h-24 mx-auto rounded-full border-2 border-blue-400 mb-3"/>
           <h2 id="p-name" className="text-xl font-semibold"></h2>
@@ -45,5 +40,4 @@ const TelegramLogin = () => {
     </div>
   );
 };
-
 export default TelegramLogin;
