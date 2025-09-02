@@ -26,9 +26,7 @@ const TelegramLogin = () => {
 
       profile.style.display = "block";
     };
-
   }, []);
-
   return (
     <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-950">
       <div className="card bg-gray-900 text-white rounded-xl p-8 shadow-xl text-center max-w-md w-full">
