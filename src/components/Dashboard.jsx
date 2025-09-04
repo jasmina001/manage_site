@@ -42,7 +42,7 @@ const Dashboard = () => {
             className="bg-green-500 text-white rounded-2xl shadow p-4 text-center font-medium hover:bg-green-600 transition"
           >
             Take exam <br />
-            <span className="text-sm opacity-90">knowledge</span>
+            <span className="text-sm opacity-90">Test your knowledge</span>
           </button>
           <button
             onClick={() => navigate("/donation")}
