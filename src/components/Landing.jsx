@@ -1,18 +1,17 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import heroImg from "../assets/hero.png";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.png";
 
 const Landing = () => {
-  const navigate = useNavigate();
-
   const handleStart = () => {
-    navigate("/telegram-login"); // TelegramLogin componentga o'tish
+    // Foydalanuvchini to‘g‘ridan-to‘g‘ri JasLangBot sahifasiga yuboramiz
+    window.location.href = "https://t.me/JasLangBot";
+    // Agar faqat mobil Telegram ilovasi ochilsin desangiz:
+    // window.location.href = "tg://resolve?domain=JasLangBot";
   };
 
   return (
     <div className="h-screen flex flex-col justify-between items-center bg-white px-6 py-8 max-w-md mx-auto md:max-w-2xl">
-      
       <img
         src={logo}
         alt="logo"
@@ -22,7 +21,7 @@ const Landing = () => {
       <div className="flex flex-col items-center text-center">
         <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold leading-snug mb-6">
           Find out <br /> your English level!
-        </h1> 
+        </h1>
         <img src={heroImg} alt="hero" className="w-72 md:w-96 lg:w-[28rem]" />
       </div>
 
@@ -32,7 +31,6 @@ const Landing = () => {
       >
         Start
       </button>
-
     </div>
   );
 };
