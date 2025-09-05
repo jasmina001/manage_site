@@ -15,7 +15,7 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    // Xato yozilgan bo‘lsa, real-time yangilaymiz
+ 
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
@@ -48,7 +48,7 @@ const Login = () => {
       >
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
 
-        {/* Ism */}
+       
         <div>
           <input
             type="text"
@@ -65,7 +65,7 @@ const Login = () => {
           )}
         </div>
 
-        {/* Telefon */}
+    
         <div>
           <input
             type="text"
@@ -84,7 +84,7 @@ const Login = () => {
           )}
         </div>
 
-        {/* Viloyat */}
+      
         <div>
           <input
             type="text"
@@ -101,7 +101,7 @@ const Login = () => {
           )}
         </div>
 
-        {/* Shahar */}
+    
         <div>
           <input
             type="text"
@@ -118,7 +118,7 @@ const Login = () => {
           )}
         </div>
 
-        {/* Submit */}
+     
         <button
           type="submit"
           className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"

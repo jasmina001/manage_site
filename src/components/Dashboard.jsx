@@ -38,6 +38,7 @@ const Dashboard = () => {
           </div>
         </div>    
         <div className="grid md:grid-cols-2 gap-4">
+          
           <button
             onClick={() => navigate("/explanation")}
             className="bg-green-500 text-white rounded-2xl shadow p-4 text-center font-medium hover:bg-green-600 transition"
