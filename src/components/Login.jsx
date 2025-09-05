@@ -11,23 +11,21 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    // Xato yozilgan bo‘lsa, real-time yangilaymiz
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     let newErrors = {};
 
     if (!formData.fullname) newErrors.fullname = "Ism kiritilishi shart!";
     if (!formData.phone) {
       newErrors.phone = "Telefon raqam shart!";
-    } else if (!/^\d+$/.test(formData.phone)) {
-      newErrors.phone = "Faqat raqam bo‘lishi kerak!";
+    } else if (!/^\+998\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Telefon raqam +998 bilan boshlanishi va 13 ta belgidan iborat bo‘lishi kerak!";
     }
     if (!formData.region) newErrors.region = "Viloyat tanlang!";
     if (!formData.city) newErrors.city = "Shahar tanlang!";
@@ -37,15 +35,37 @@ const Login = () => {
       return;
     }
 
-    navigate("/dashboard");
+    try {
+      setLoading(true);
+      const res = await fetch("http://176.57.150.199:8080/auth/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        throw new Error("API ishlamadi");
+      }
+
+      const data = await res.json();
+      console.log("API javobi:", data);
+
+      localStorage.setItem("userData", JSON.stringify(data));
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Xatolik:", error);
+      alert("Kirishda xatolik yuz berdi!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5"
-      >
+      <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
 
         {/* Ism */}
@@ -70,11 +90,9 @@ const Login = () => {
           <input
             type="text"
             name="phone"
-            placeholder="Telefon raqamingiz"
+            placeholder="+998901234567"
             value={formData.phone}
             onChange={handleChange}
-            inputMode="numeric"
-            pattern="[0-9]*"
             className={`w-full px-4 py-2 rounded-lg border ${
               errors.phone ? "border-red-500" : "border-gray-300"
             } focus:outline-none focus:ring-2 focus:ring-orange-500`}
@@ -120,12 +138,13 @@ const Login = () => {
 
         {/* Submit */}
         <button
-          type="submit"
-          className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition disabled:opacity-50"
         >
-          Continue
+          {loading ? "Yuborilmoqda..." : "Continue"}
         </button>
-      </form>
+      </div>
     </div>
   );
 };
