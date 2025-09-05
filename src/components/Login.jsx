@@ -20,10 +20,8 @@ const Login = () => {
 
     setErrors({ ...errors, [e.target.name]: "" });
   };
-
   const handleSubmit = async () => {
     let newErrors = {};
-
     if (!formData.fullname) newErrors.fullname = "Ism kiritilishi shart!";
     if (!formData.phone) {
       newErrors.phone = "Telefon raqam shart!";
@@ -37,7 +35,6 @@ const Login = () => {
       setErrors(newErrors);
       return;
     }
-
     try {
       setLoading(true);
       const res = await fetch("http://176.57.150.199:8080/auth/user/login", {
