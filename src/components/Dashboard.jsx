@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useStars } from "../StarContext";
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const { stars } = useStars();
@@ -35,7 +36,7 @@ const Dashboard = () => {
             <p className="text-2xl font-bold">57</p>
             <p className="text-gray-500 text-sm">Avg score</p>
           </div>
-        </div>
+        </div>    
         <div className="grid md:grid-cols-2 gap-4">
           <button
             onClick={() => navigate("/explanation")}
@@ -57,3 +58,4 @@ const Dashboard = () => {
   );
 };
 export default Dashboard;
+
