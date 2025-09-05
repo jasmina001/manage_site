@@ -4,10 +4,7 @@ import logo from "../assets/logo.png";
 
 const Landing = () => {
   const handleStart = () => {
-    // Foydalanuvchini to‘g‘ridan-to‘g‘ri JasLangBot sahifasiga yuboramiz
-    window.location.href = "https://t.me/JasLangBot";
-    // Agar faqat mobil Telegram ilovasi ochilsin desangiz:
-    // window.location.href = "tg://resolve?domain=JasLangBot";
+    window.location.href = "https://t.me/JasLangBot"
   };
 
   return (
