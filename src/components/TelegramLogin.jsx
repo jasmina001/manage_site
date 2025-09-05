@@ -6,7 +6,6 @@ export default function TelegramLogin() {
   const onTelegramAuth = (userData) => {
     setUser(userData);
   };
-
   return (
     <main className="card">
       <h1>Telegram bilan kirish</h1>
