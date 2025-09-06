@@ -1,48 +1,37 @@
-import React, { useEffect } from "react";
+import React from "react";
+import heroImg from "../assets/hero.png";
+import logo from "../assets/logo.png";
+import { FaTelegramPlane } from "react-icons/fa"; // Telegram icon
 
 const Landing = () => {
-  useEffect(() => {
-    // Telegram widget scriptini yuklash
-    const script = document.createElement("script");
-    script.src = "https://telegram.org/js/telegram-widget.js?22";
-    script.setAttribute("data-telegram-login", "testnimadir2_bot"); // bot username
-    script.setAttribute("data-size", "large");
-    script.setAttribute("data-userpic", "true");
-    script.setAttribute("data-onauth", "onTelegramAuth(user)");
-    script.setAttribute("data-request-access", "write");
-    script.async = true;
-    document.getElementById("telegram-login").appendChild(script);
-  }, []);
-
-  // Login funksiyasi
-  window.onTelegramAuth = (user) => {
-    console.log("User:", user);
-
-    // backendga yuborish
-    fetch("http://localhost:8081/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: String(user.id),
-        firstName: user.first_name || "",
-        lastName: user.last_name || "",
-        username: user.username || "",
-        authDate: String(user.auth_date),
-        hash: user.hash || "",
-        chatId: String(user.id),
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Server javobi:", data);
-      })
-      .catch((err) => console.error("Xatolik:", err));
+  const handleTelegramLogin = () => {
+    // To'g'ridan-to'g'ri Telegram bot login URL'iga yo'naltirish
+    window.location.href = "https://t.me/testnimadir2_bot";
   };
 
   return (
-    <div className="landing">
-      <h2>Telegram orqali kirish</h2>
-      <div id="telegram-login"></div>
+    <div className="h-screen flex flex-col justify-between items-center bg-white px-6 py-8 max-w-md mx-auto md:max-w-2xl">
+      <img
+        src={logo}
+        alt="logo"
+        className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+      />
+
+      <div className="flex flex-col items-center text-center">
+        <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold leading-snug mb-6">
+          Find out <br /> your English level!
+        </h1>
+        <img src={heroImg} alt="hero" className="w-72 md:w-96 lg:w-[28rem]" />
+      </div>
+
+      {/* Custom chiroyli Telegram Button */}
+      <button
+        onClick={handleTelegramLogin}
+        className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-sky-400 to-blue-600 text-white py-3 rounded-full text-lg md:text-xl font-semibold shadow-lg hover:from-sky-500 hover:to-blue-700 transition-all duration-300"
+      >
+        <FaTelegramPlane className="text-2xl" />
+        Continue with Telegram
+      </button>
     </div>
   );
 };
