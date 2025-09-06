@@ -124,8 +124,8 @@
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    background: linear-gradient(180deg,var(--accent) 0%, var(--accent-dark) 100%);
-    border:none;
+    border: 7px solid var(--accent);
+    background: #fff;
     cursor:pointer;
     box-shadow: 0 12px 30px rgba(255,122,45,0.18);
     transition: transform .18s ease, box-shadow .18s ease, opacity .18s;

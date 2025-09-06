@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStars } from "../StarContext";
 import "./ExamPage.css";
+import micro from "../assets/micro.png"
 
 const QUESTIONS = [
   { id: 1, part: 1, number: 1, text: "What is the capital of France?", answer: "paris" },
@@ -52,7 +53,6 @@ const ExamPage = () => {
 
     setTimeLeft(TIME_PER_QUESTION);
 
-    // Savolni ovozda o‘qib berish
     speakText(QUESTIONS[index].text);
 
     clearInterval(timerRef.current);
@@ -66,7 +66,7 @@ const ExamPage = () => {
     if (timeLeft <= 0 && !finished && QUESTIONS[index]) evaluateAnswer("");
   }, [timeLeft, finished, index]);
 
-  // Javobni tekshirish
+  // Javobni tekshirish va API'ga yuborish
   const evaluateAnswer = (userText) => {
     if (finished || !QUESTIONS[index]) return;
 
@@ -76,15 +76,34 @@ const ExamPage = () => {
 
     let isCorrect = false;
     if (correctAnswer === "") {
-      // Agar savolda "free text" bo‘lsa, foydalanuvchi hech narsa demasa noto‘g‘ri
       isCorrect = normalizedUser.length > 0;
     } else {
-      // To‘liq mos bo‘lsa to‘g‘ri
       isCorrect = normalizedUser === correctAnswer;
     }
 
     setResults(prev => [...prev, { questionId: q.id, correct: isCorrect, answer: normalizedUser }]);
     if (isCorrect) addStar();
+
+    // 🔹 Javobni API'ga yuborish
+    const token = localStorage.getItem("token");
+    fetch("http://167.86.121.42:8080/api/test/startTest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify({
+        questionId: q.id,
+        answer: normalizedUser || null,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("✅ Answer API javobi:", data);
+      })
+      .catch(err => {
+        console.error("❌ Answer API xato:", err);
+      });
 
     clearInterval(timerRef.current);
 
@@ -105,6 +124,24 @@ const ExamPage = () => {
       alert("Your browser does not support speech recognition.");
       return;
     }
+
+    // 🔹 Testni boshlash API
+    const token = localStorage.getItem("token");
+    fetch("http://167.86.121.42:8080/api/test/startTest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify({
+        questionId: QUESTIONS[index].id,
+        answer: null,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => console.log("✅ Start API javobi:", data))
+      .catch(err => console.error("❌ Start API xato:", err));
+
     setTranscript("");
     setListening(true);
     try {
@@ -129,43 +166,11 @@ const ExamPage = () => {
 
     return (
       <div className="exam-root">
-        {/* <div className="exam-card result-card">
-          <h2 className="exam-title">Exam finished 🎉</h2>
-
-          <div className="result-row">
-            <div className="result-block">
-              <div className="result-number">{trueCount}</div>
-              <div className="result-label">True answers</div>
-            </div>
-            <div className="result-block">
-              <div className="result-number">{falseCount}</div>
-              <div className="result-label">False answers</div>
-            </div>
-            <div className="result-block">
-              <div className="result-number">{storedStars}</div>
-              <div className="result-label">Stars</div>
-            </div>
-          </div>
-
-          <div className="results-list">
-            {results.map((r, i) => {
-              const q = QUESTIONS.find(q => q.id === r.questionId);
-              return (
-                <div key={i} className="results-item">
-                  <div className="q-text">{q?.text}</div>
-                  <div className={`q-user ${r.correct ? "ok" : "bad"}`}>
-                    {r.answer || <i>no answer</i>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <button className="btn primary mt-6" onClick={() => navigate("/dashboard")}>
-            Go to Dashboard
-          </button>
-        </div> */}
-        dsadasl
+        <h2 className="exam-title">Exam finished 🎉</h2>
+        <p>✅ Correct: {trueCount} | ❌ Wrong: {falseCount} | ⭐ Stars: {storedStars}</p>
+        <button className="btn primary mt-6" onClick={() => navigate("/dashboard")}>
+          Go to Dashboard
+        </button>
       </div>
     );
   }
@@ -198,7 +203,7 @@ const ExamPage = () => {
             onClick={startListening}
             aria-label="Start recording"
           >
-            🎙
+            <img src={micro} alt="" />
           </button>
         </div>
       </div>
