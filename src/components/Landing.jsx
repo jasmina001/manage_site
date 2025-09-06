@@ -1,10 +1,12 @@
 import React from "react";
 import heroImg from "../assets/hero.png";
 import logo from "../assets/logo.png";
+import { FaTelegramPlane } from "react-icons/fa"; // Telegram icon
 
 const Landing = () => {
-  const handleStart = () => {
-    window.location.href = "https://t.me/JasLangBot"
+  const handleTelegramLogin = () => {
+    // To'g'ridan-to'g'ri Telegram bot login URL'iga yo'naltirish
+    window.location.href = "https://t.me/testnimadir2_bot";
   };
 
   return (
@@ -22,11 +24,13 @@ const Landing = () => {
         <img src={heroImg} alt="hero" className="w-72 md:w-96 lg:w-[28rem]" />
       </div>
 
+      {/* Custom chiroyli Telegram Button */}
       <button
-        onClick={handleStart}
-        className="w-full bg-orange-500 text-white py-3 rounded-full text-lg md:text-xl font-medium shadow-md hover:bg-orange-600 transition"
+        onClick={handleTelegramLogin}
+        className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-sky-400 to-blue-600 text-white py-3 rounded-full text-lg md:text-xl font-semibold shadow-lg hover:from-sky-500 hover:to-blue-700 transition-all duration-300"
       >
-        Start
+        <FaTelegramPlane className="text-2xl" />
+        Continue with Telegram
       </button>
     </div>
   );

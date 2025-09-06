@@ -9,18 +9,14 @@ const Login = () => {
     region: "",
     city: "",
   });
-
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
   };
-
   const handleSubmit = async () => {
     let newErrors = {};
-
     if (!formData.fullname) newErrors.fullname = "Ism kiritilishi shart!";
     if (!formData.phone) {
       newErrors.phone = "Telefon raqam shart!";
@@ -35,18 +31,17 @@ const Login = () => {
       setErrors(newErrors);
       return;
     }
-
     try {
       setLoading(true);
 
-      // API uchun yuboriladigan obyekt
+   
       const payload = {
-        chatId: "123456789", // test uchun default ID
+        chatId: "123456789", 
         fullName: formData.fullname,
         region: formData.region,
         city: formData.city,
         phone: formData.phone,
-        imageUrl: "https://picsum.photos/200", // test uchun default avatar
+        imageUrl: "https://picsum.photos/200", 
       };
 
       console.log("Yuborilayotgan payload:", payload);
@@ -72,10 +67,7 @@ const Login = () => {
         return;
       }
 
-      // Ma’lumotlarni saqlash
       localStorage.setItem("userData", JSON.stringify(data));
-
-      // Dashboard sahifasiga o‘tkazish
       navigate("/dashboard");
     } catch (error) {
       console.error("Xatolik:", error);
@@ -89,8 +81,6 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-
-        {/* Ism */}
         <div>
           <input
             type="text"
@@ -106,8 +96,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.fullname}</p>
           )}
         </div>
-
-        {/* Telefon */}
         <div>
           <input
             type="text"
@@ -123,8 +111,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
           )}
         </div>
-
-        {/* Viloyat */}
         <div>
           <input
             type="text"
@@ -140,8 +126,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.region}</p>
           )}
         </div>
-
-        {/* Shahar */}
         <div>
           <input
             type="text"
@@ -157,8 +141,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.city}</p>
           )}
         </div>
-
-        {/* Submit */}
         <button
           onClick={handleSubmit}
           disabled={loading}
@@ -170,5 +152,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
