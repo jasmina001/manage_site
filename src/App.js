@@ -11,6 +11,7 @@ import ExamPage from "./components/ExamPage";
 import TelegramLogin from "./components/TelegramLogin";
 
 import { StarProvider } from "./StarContext";
+import ExamHistory from "./components/ExamHistory";
 
 function App() {
   return (
@@ -35,6 +36,9 @@ function App() {
 
           {/* ExamPage – imtihon sahifasi */}
           <Route path="/exam" element={<ExamPage />} />
+
+          {/* ExamHistoryPage – imtihon sahifasi istoriyasi */}
+          <Route path="/exams-history" element={<ExamHistory />} />
 
           {/* TelegramLogin – Telegram orqali login sahifasi */}
           <Route path="/telegram-login" element={<TelegramLogin />} />

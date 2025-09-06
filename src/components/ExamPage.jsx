@@ -23,7 +23,6 @@ const ExamPage = () => {
   const [finished, setFinished] = useState(false);
   const recognitionRef = useRef(null);
   const timerRef = useRef(null);
-  const firstTtsDoneRef = useRef(false);
 
   // SpeechRecognition init
   useEffect(() => {
@@ -47,16 +46,14 @@ const ExamPage = () => {
     recog.onend = () => setListening(false);
   }, []);
 
-  // Timer for each question
+  // Timer + TTS
   useEffect(() => {
     if (finished || !QUESTIONS[index]) return;
 
     setTimeLeft(TIME_PER_QUESTION);
 
-    if (!firstTtsDoneRef.current && index === 0) {
-      firstTtsDoneRef.current = true;
-      speakText(QUESTIONS[0].text);
-    }
+    // Savolni ovozda o‘qib berish
+    speakText(QUESTIONS[index].text);
 
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setTimeLeft(t => t - 1), 1000);
@@ -69,17 +66,27 @@ const ExamPage = () => {
     if (timeLeft <= 0 && !finished && QUESTIONS[index]) evaluateAnswer("");
   }, [timeLeft, finished, index]);
 
-  // Evaluate answer
+  // Javobni tekshirish
   const evaluateAnswer = (userText) => {
     if (finished || !QUESTIONS[index]) return;
 
     const q = QUESTIONS[index];
     const normalizedUser = (userText || "").toString().trim().toLowerCase();
     const correctAnswer = (q.answer || "").toString().trim().toLowerCase();
-    const isCorrect = correctAnswer === "" ? normalizedUser.length > 0 : normalizedUser.includes(correctAnswer) && correctAnswer.length > 0;
+
+    let isCorrect = false;
+    if (correctAnswer === "") {
+      // Agar savolda "free text" bo‘lsa, foydalanuvchi hech narsa demasa noto‘g‘ri
+      isCorrect = normalizedUser.length > 0;
+    } else {
+      // To‘liq mos bo‘lsa to‘g‘ri
+      isCorrect = normalizedUser === correctAnswer;
+    }
 
     setResults(prev => [...prev, { questionId: q.id, correct: isCorrect, answer: normalizedUser }]);
     if (isCorrect) addStar();
+
+    clearInterval(timerRef.current);
 
     setTimeout(() => {
       if (index + 1 < QUESTIONS.length) {
@@ -87,7 +94,6 @@ const ExamPage = () => {
         setTranscript("");
         setTimeLeft(TIME_PER_QUESTION);
       } else {
-        clearInterval(timerRef.current);
         setFinished(true);
       }
     }, 900);
@@ -95,10 +101,17 @@ const ExamPage = () => {
 
   const startListening = () => {
     const recog = recognitionRef.current;
-    if (!recog) { alert("Your browser does not support speech recognition."); return; }
+    if (!recog) {
+      alert("Your browser does not support speech recognition.");
+      return;
+    }
     setTranscript("");
     setListening(true);
-    try { recog.start(); } catch { setListening(false); }
+    try {
+      recog.start();
+    } catch {
+      setListening(false);
+    }
   };
 
   const speakText = (text) => {
@@ -116,7 +129,7 @@ const ExamPage = () => {
 
     return (
       <div className="exam-root">
-        <div className="exam-card result-card">
+        {/* <div className="exam-card result-card">
           <h2 className="exam-title">Exam finished 🎉</h2>
 
           <div className="result-row">
@@ -151,7 +164,8 @@ const ExamPage = () => {
           <button className="btn primary mt-6" onClick={() => navigate("/dashboard")}>
             Go to Dashboard
           </button>
-        </div>
+        </div> */}
+        dsadasl
       </div>
     );
   }
@@ -177,6 +191,7 @@ const ExamPage = () => {
             {transcript || <span className="muted">Speak using the mic below...</span>}
           </div>
         </div>
+
         <div className="controls">
           <button
             className={`mic-btn ${listening ? "listening" : ""}`}
