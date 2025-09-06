@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Login</title>
+</head>
+<body>
+    <h2>Telegram orqali kirish</h2>
+
+    <script async src="https://telegram.org/js/telegram-widget.js?22"
+            data-telegram-login="testnimadir_bot"
+            data-size="large"
+            data-onauth="onTelegramAuth(user)"
+            data-request-access="write">
+    </script>
+
+    <div id="result"></div>
+
+    <script>
+        function onTelegramAuth(user) {
+            const payload = {
+                id: String(user.id),                // string ko‘rinishida
+                firstName: user.first_name || "",
+                lastName: user.last_name || "",
+                username: user.username || "",
+                authDate: String(user.auth_date),   // string qilib yuboriladi
+                hash: user.hash || "",
+                chatId: String(user.id)             // vaqtincha user.id ni chatId sifatida yuborish
+            };
+
+            fetch("http://localhost:8081/auth/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    document.getElementById("result").innerHTML =
+                        `<p>Token: ${data.data.token}</p>
+                        <p>Role: ${data.data.role}</p>`;
+                } else {
+                    document.getElementById("result").innerText = "Kirish muvaffaqiyatsiz";
+                }
+            })
+            .catch(() => document.getElementById("result").innerText = "Xatolik yuz berdi");
+        }
+    </script>
+
+</body>
+</html>
