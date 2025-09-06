@@ -129,7 +129,7 @@ const Login = () => {
         <div>
           <input
             type="text"
-            name="city"
+           
             placeholder="Shaharingiz"
             value={formData.city}
             onChange={handleChange}
