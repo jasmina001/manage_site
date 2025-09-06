@@ -4,22 +4,39 @@ import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [level, setLevel] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userData");
+    const token = localStorage.getItem("token"); // ✅ tokenni alohida olish
 
-    if (!storedUser) {
+    if (!storedUser || !token) {
       navigate("/login");
       return;
     }
 
     const parsedUser = JSON.parse(storedUser);
+    setUser(parsedUser);
 
-    if (parsedUser.data) {
-      setUser(parsedUser.data);
-    } else {
-      setUser(parsedUser);
-    }
+    console.log("📌 Token:", token); // tekshirish uchun
+
+    fetch("http://167.86.121.42:8080/user/dashboard", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // ✅ tokenni yuborish
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("📌 Dashboard API javobi:", data);
+        if (data.success && data.data?.status) {
+          setLevel(data.data.status); // masalan "A2"
+        }
+      })
+      .catch((err) => {
+        console.error("API error:", err);
+      });
   }, [navigate]);
 
   return (
@@ -47,7 +64,7 @@ const Dashboard = () => {
             onClick={() => navigate("/level")}
             className="bg-white rounded-2xl shadow p-4 text-center cursor-pointer hover:bg-gray-50"
           >
-            <p className="text-2xl font-bold">B2</p>
+            <p className="text-2xl font-bold">{level || "..."}</p>
             <p className="text-gray-500 text-sm">Your level</p>
           </div>
           <div
@@ -60,7 +77,6 @@ const Dashboard = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
-          
           <button
             onClick={() => navigate("/explanation")}
             className="bg-green-500 text-white rounded-2xl shadow p-4 text-center font-medium hover:bg-green-600 transition"

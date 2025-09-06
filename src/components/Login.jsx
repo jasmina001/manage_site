@@ -11,10 +11,12 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
   };
+
   const handleSubmit = async () => {
     let newErrors = {};
     if (!formData.fullname) newErrors.fullname = "Ism kiritilishi shart!";
@@ -31,17 +33,17 @@ const Login = () => {
       setErrors(newErrors);
       return;
     }
+
     try {
       setLoading(true);
 
-   
       const payload = {
-        chatId: "123456789", 
+        chatId: "123456789",
         fullName: formData.fullname,
         region: formData.region,
         city: formData.city,
         phone: formData.phone,
-        imageUrl: "https://picsum.photos/200", 
+        imageUrl: "https://picsum.photos/200",
       };
 
       console.log("Yuborilayotgan payload:", payload);
@@ -54,20 +56,29 @@ const Login = () => {
         body: JSON.stringify(payload),
       });
 
-      const text = await res.text();
-      console.log("Backend javobi:", text);
-
       if (!res.ok) {
         throw new Error(`API ishlamadi: ${res.status}`);
       }
 
-      const data = JSON.parse(text);
+      const data = await res.json();
+      console.log("Backend javobi:", data);
+
       if (data.success === false) {
         alert(data.message || "Login muvaffaqiyatsiz!");
         return;
       }
 
-      localStorage.setItem("userData", JSON.stringify(data));
+      // Tokenni alohida saqlash
+      if (data.data) {
+        localStorage.setItem("token", data.data);
+        console.log("📌 Token saqlandi:", data.data);
+      }
+
+      // Foydalanuvchi ma’lumotlarini saqlash
+      if (data.data) {
+        localStorage.setItem("userData", JSON.stringify(data.data));
+      }
+
       navigate("/dashboard");
     } catch (error) {
       console.error("Xatolik:", error);
@@ -152,4 +163,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;
