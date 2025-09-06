@@ -2,42 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Login tekshirish
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login"); // Login qilinmagan bo‘lsa qaytarib yuboradi
+    // Login qilinganmi tekshirish
+    const storedUser = localStorage.getItem("userData");
+
+    if (!storedUser) {
+      navigate("/login"); // login qilmagan bo‘lsa qaytarib yuboramiz
       return;
     }
 
-    const fetchUser = async () => {
-      try {
-        const res = await fetch("http://167.86.121.42:8080/user", {
-          headers: {
-            Authorization: `Bearer ${token}`, // agar token kerak bo‘lsa
-          },
-        });
-        const data = await res.json();
-        if (data.success) {
-          setUser(data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
+    // Agar login qilingan bo‘lsa, userni olish
+    const parsedUser = JSON.parse(storedUser);
 
-    fetchUser();
+    // Agar backend token qaytargan bo‘lsa, uni ham ishlatish mumkin
+    if (parsedUser.data) {
+      setUser(parsedUser.data);
+    } else {
+      setUser(parsedUser);
+    }
   }, [navigate]);
 
   return (
     <div className="min-h-screen bg-[#E6F0FA] flex justify-center py-6 px-4">
       <div className="w-full max-w-sm md:max-w-3xl lg:max-w-5xl space-y-4">
-        {/* Score only */}
+        {/* Faqat score va yulduz */}
         <div className="bg-white rounded-2xl shadow p-4 flex justify-between items-center">
-          <span className="text-xl md:text-2xl font-bold">{user?.score || 0}</span>
+          <span className="text-xl md:text-2xl font-bold">
+            {user?.score || 0}
+          </span>
           <span className="text-yellow-500 text-2xl md:text-3xl">★</span>
         </div>
 
@@ -52,7 +47,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Level & Average Score */}
+        {/* Level & Avg Score */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
           <div
             onClick={() => navigate("/level")}
