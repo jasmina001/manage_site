@@ -92,8 +92,5 @@ const Dashboard = () => {
     </div>
   );
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> 56df4ee54b2b1d7e1a6172173bb94ce863d23c6d
 export default Dashboard;
