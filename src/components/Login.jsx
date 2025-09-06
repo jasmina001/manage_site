@@ -46,8 +46,6 @@ const Login = () => {
         imageUrl: "https://picsum.photos/200",
       };
 
-      console.log("Yuborilayotgan payload:", payload);
-
       const res = await fetch("http://167.86.121.42:8080/auth/user/login", {
         method: "POST",
         headers: {
@@ -61,20 +59,17 @@ const Login = () => {
       }
 
       const data = await res.json();
-      console.log("Backend javobi:", data);
 
       if (data.success === false) {
         alert(data.message || "Login muvaffaqiyatsiz!");
         return;
       }
 
-      // Tokenni alohida saqlash
       if (data.data) {
         localStorage.setItem("token", data.data);
         console.log("📌 Token saqlandi:", data.data);
       }
 
-      // Foydalanuvchi ma’lumotlarini saqlash
       if (data.data) {
         localStorage.setItem("userData", JSON.stringify(data.data));
       }

@@ -8,7 +8,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userData");
-    const token = localStorage.getItem("token"); // ✅ tokenni alohida olish
+    const token = localStorage.getItem("token");
 
     if (!storedUser || !token) {
       navigate("/login");
@@ -18,20 +18,17 @@ const Dashboard = () => {
     const parsedUser = JSON.parse(storedUser);
     setUser(parsedUser);
 
-    console.log("📌 Token:", token); // tekshirish uchun
-
     fetch("http://167.86.121.42:8080/user/dashboard", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // ✅ tokenni yuborish
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("📌 Dashboard API javobi:", data);
         if (data.success && data.data?.status) {
-          setLevel(data.data.status); // masalan "A2"
+          setLevel(data.data.status);
         }
       })
       .catch((err) => {
