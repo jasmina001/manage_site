@@ -1,8 +1,6 @@
 // App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-// Sahifa komponentlarini import qilamiz
 import Landing from "./components/Landing";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
