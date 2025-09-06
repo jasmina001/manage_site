@@ -38,7 +38,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-[#E6F0FA] flex justify-center py-6 px-4">
-      <div className="w-full max-w-sm md:max-w-3xl lg:max-w-5xl space-y-4">
+      <div className="w-full max-w-sm md:max-w-3xl lg:max-w-[75rem] space-y-4">
         <div className="bg-white rounded-2xl shadow p-4 flex justify-between items-center">
           <span className="text-xl md:text-2xl font-bold">
             {user?.score || 0}
