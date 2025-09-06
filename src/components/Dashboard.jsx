@@ -6,18 +6,15 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Login qilinganmi tekshirish
     const storedUser = localStorage.getItem("userData");
 
     if (!storedUser) {
-      navigate("/login"); // login qilmagan bo‘lsa qaytarib yuboramiz
+      navigate("/login");
       return;
     }
 
-    // Agar login qilingan bo‘lsa, userni olish
     const parsedUser = JSON.parse(storedUser);
 
-    // Agar backend token qaytargan bo‘lsa, uni ham ishlatish mumkin
     if (parsedUser.data) {
       setUser(parsedUser.data);
     } else {
@@ -28,7 +25,6 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#E6F0FA] flex justify-center py-6 px-4">
       <div className="w-full max-w-sm md:max-w-3xl lg:max-w-5xl space-y-4">
-        {/* Faqat score va yulduz */}
         <div className="bg-white rounded-2xl shadow p-4 flex justify-between items-center">
           <span className="text-xl md:text-2xl font-bold">
             {user?.score || 0}
@@ -36,7 +32,6 @@ const Dashboard = () => {
           <span className="text-yellow-500 text-2xl md:text-3xl">★</span>
         </div>
 
-        {/* Exams history */}
         <div
           onClick={() => navigate("/exams-history")}
           className="bg-orange-500 text-white rounded-2xl shadow p-4 md:col-span-2 cursor-pointer hover:opacity-90"
@@ -47,7 +42,6 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Level & Avg Score */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
           <div
             onClick={() => navigate("/level")}
@@ -65,7 +59,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="grid md:grid-cols-2 gap-4">
           
           <button
