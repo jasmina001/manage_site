@@ -10,7 +10,6 @@ import Explanation from "./components/Explanation";
 import ExamPage from "./components/ExamPage";
 import TelegramLogin from "./components/TelegramLogin";
 
-// StarProvider kontekstini import qilamiz (ballar yoki yulduzlar holati uchun)
 import { StarProvider } from "./StarContext";
 
 function App() {
