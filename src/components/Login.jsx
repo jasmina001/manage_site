@@ -21,7 +21,8 @@ const Login = () => {
     if (!formData.phone) {
       newErrors.phone = "Telefon raqam shart!";
     } else if (!/^\+998\d{9}$/.test(formData.phone)) {
-      newErrors.phone = "Telefon raqam +998 bilan boshlanishi va 13 ta belgidan iborat bo‘lishi kerak!";
+      newErrors.phone =
+        "Telefon raqam +998 bilan boshlanishi va 13 ta belgidan iborat bo‘lishi kerak!";
     }
     if (!formData.region) newErrors.region = "Viloyat tanlang!";
     if (!formData.city) newErrors.city = "Shahar tanlang!";
@@ -32,23 +33,44 @@ const Login = () => {
     }
     try {
       setLoading(true);
-      const res = await fetch("http://176.57.150.199:8080/auth/user/login", {
+
+      // API uchun yuboriladigan obyekt
+      const payload = {
+        chatId: "123456789", // test uchun default ID
+        fullName: formData.fullname,
+        region: formData.region,
+        city: formData.city,
+        phone: formData.phone,
+        imageUrl: "https://picsum.photos/200", // test uchun default avatar
+      };
+
+      console.log("Yuborilayotgan payload:", payload);
+
+      const res = await fetch("http://167.86.121.42:8080/auth/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
+      const text = await res.text();
+      console.log("Backend javobi:", text);
+
       if (!res.ok) {
-        throw new Error("API ishlamadi");
+        throw new Error(`API ishlamadi: ${res.status}`);
       }
 
-      const data = await res.json();
-      console.log("API javobi:", data);
+      const data = JSON.parse(text);
+      if (data.success === false) {
+        alert(data.message || "Login muvaffaqiyatsiz!");
+        return;
+      }
 
+      // Ma’lumotlarni saqlash
       localStorage.setItem("userData", JSON.stringify(data));
 
+      // Dashboard sahifasiga o‘tkazish
       navigate("/dashboard");
     } catch (error) {
       console.error("Xatolik:", error);
