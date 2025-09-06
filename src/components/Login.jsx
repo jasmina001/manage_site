@@ -34,14 +34,14 @@ const Login = () => {
     try {
       setLoading(true);
 
-      // API uchun yuboriladigan obyekt
+   
       const payload = {
-        chatId: "123456789", // test uchun default ID
+        chatId: "123456789", 
         fullName: formData.fullname,
         region: formData.region,
         city: formData.city,
         phone: formData.phone,
-        imageUrl: "https://picsum.photos/200", // test uchun default avatar
+        imageUrl: "https://picsum.photos/200", 
       };
 
       console.log("Yuborilayotgan payload:", payload);
@@ -67,10 +67,7 @@ const Login = () => {
         return;
       }
 
-      // Ma’lumotlarni saqlash
       localStorage.setItem("userData", JSON.stringify(data));
-
-      // Dashboard sahifasiga o‘tkazish
       navigate("/dashboard");
     } catch (error) {
       console.error("Xatolik:", error);
@@ -84,8 +81,6 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
-
-       
         <div>
           <input
             type="text"
@@ -101,8 +96,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.fullname}</p>
           )}
         </div>
-
-    
         <div>
           <input
             type="text"
@@ -118,8 +111,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
           )}
         </div>
-
-      
         <div>
           <input
             type="text"
@@ -135,8 +126,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.region}</p>
           )}
         </div>
-
-    
         <div>
           <input
             type="text"
@@ -152,8 +141,6 @@ const Login = () => {
             <p className="text-red-500 text-sm mt-1">{errors.city}</p>
           )}
         </div>
-
-     
         <button
           onClick={handleSubmit}
           disabled={loading}
@@ -165,5 +152,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
