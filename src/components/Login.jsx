@@ -16,7 +16,6 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
   };
-
   const handleSubmit = async () => {
     let newErrors = {};
     if (!formData.fullname) newErrors.fullname = "Ism kiritilishi shart!";
@@ -82,7 +81,6 @@ const Login = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-5">
