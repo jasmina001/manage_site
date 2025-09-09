@@ -26,15 +26,12 @@ const Login = () => {
     }
     if (!formData.region) newErrors.region = "Viloyat tanlang!";
     if (!formData.city) newErrors.city = "Shahar tanlang!";
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
     try {
       setLoading(true);
-
       const payload = {
         chatId: "123456789",
         fullName: formData.fullname,
