@@ -1,7 +1,7 @@
 import React from "react";
 import heroImg from "../assets/hero.png";
 import logo from "../assets/logo.png";
-import { FaTelegramPlane } from "react-icons/fa"; // Telegram icon
+import { FaTelegramPlane } from "react-icons/fa"; 
 
 const Landing = () => {
   const handleTelegramLogin = () => {
