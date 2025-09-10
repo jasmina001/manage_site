@@ -5,7 +5,7 @@ import { FaTelegramPlane } from "react-icons/fa";
 
 const Landing = () => {
   const handleTelegramLogin = () => {
-    // To'g'ridan-to'g'ri Telegram bot login URL'iga yo'naltirish
+
     window.location.href = "https://t.me/testnimadir2_bot";
   };
 
