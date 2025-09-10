@@ -1,22 +1,27 @@
 import React from "react";
+import kartaImage from "../assets/karta.jpg"; // rasmni import qildik
 
 const Donation = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC] px-6 py-10">
-      {/* Card image joyi */}
-      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 flex flex-col items-center">
-        {/* Bu yerga rasmni qo‘yasiz */}
-        <div className="w-72 h-44 bg-gray-200 rounded-lg flex items-center justify-center mb-6">
-          <span className="text-gray-500">[Card image here]</span>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 flex justify-center items-center p-6">
+      <div className="bg-white shadow-2xl rounded-3xl p-8 max-w-lg w-full text-center transform hover:scale-[1.02] transition duration-300">
+        
+        {/* Kartochka rasmi */}
+        <div className="mb-6">
+          <img
+            src={kartaImage}
+            alt="Karta"
+            className="mx-auto w-72 rounded-xl shadow-lg border border-gray-200"
+          />
         </div>
 
         {/* Matn */}
-        <h2 className="text-2xl font-bold text-gray-800 mb-3">
-          Thank you for your support! 🙏
+        <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4">
+        Thank you for supporting our team!
         </h2>
-        <p className="text-gray-600 text-center leading-relaxed">
-          Your donation helps us improve and continue building new features.
-          We appreciate your kindness and support to our team. 💙
+        <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+          Your donation helps us grow, improve our work, and continue building 
+          <span className="font-semibold text-orange-500"> better projects</span> for everyone.
         </p>
       </div>
     </div>
